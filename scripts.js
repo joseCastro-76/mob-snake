@@ -4,6 +4,8 @@ var x = 25;
 var y = 25;
 var dx = 25;
 var dy = 0;
+let appleX = Math.round((Math.random() * 800) / 25) * 25;
+let appleY = Math.round((Math.random() * 800) / 25) * 25;
 
 var rightPressed = false;
 var leftPressed = false;
@@ -44,10 +46,21 @@ function drawSnake() {
     }
 }
 
+function drawApple() {
+    ctx.beginPath();
+    ctx.rect(appleX, appleY, 25, 25);
+    ctx.fillStyle = "#FF0000";
+    ctx.fill();
+    ctx.closePath();
+}
 
 function draw() {
     drawSnake();
+    drawApple();
+    let snakeHead = snakeBody[snakeBody.length - 1];
+    let snakeTail = snakeBody.slice(0, snakeBody.length - 1);
 
+    // Direction
     if(rightPressed) {
         dx = 25;
         dy = 0;
@@ -62,18 +75,44 @@ function draw() {
         dy = 25;
     }
 
+    // Apple detection
+    if(appleX == snakeHead[0] && appleY == snakeHead[1]) {
+        appleX = Math.round((Math.random() * 800) / 25) * 25;
+        appley = Math.round((Math.random() * 800) / 25) * 25;
+        snakeLength += 1;
+    }
+
+    // Snake body detection
+    if(snakeTail.includes(snakeHead)){
+        console.log('I eated myself');
+    }
+
+    // Wall detection
+
+    // Resets arrow presses
     rightPressed = false;
     leftPressed = false;
     upPressed = false;
     downPressed = false;
 
+    // Moves the snake
     x += dx;
     y += dy;
 }
 
 setInterval(draw, 200);
 
-
+// SNAKE 
+// 1. Clear apple once eaten.  Make sure does not respawn*  same spot 
+// 2. Body detection 
+// 3. Wall detection 
+// 4. Grass Grid* 
+// 5. Apple Logic- can not place apple on body of snake   
+// 6. Audio-sound effect(chomp!) when apple is eaten   
+// 7.  Score board   
+// 8.  High Score   
+// 9.  Start Screen with start button 
+// 10. Game Over screen with continue button
 
 // const canvas = {
 //     element: document.querySelector("canvas"),
